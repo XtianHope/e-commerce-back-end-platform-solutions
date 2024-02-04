@@ -37,15 +37,18 @@ router.post('/', async (req, res) => {
       tagIds: [1, 2, 3, 4]
     }
   */
+
   try {
     const product = await Product.create(req.body);
     // if there's product tags, we need to create pairings by using the setTags method
-    if (req.body.tagIds) {
+    if (req.body.tagIds && req.body.tagIds.length > 0) {
       await product.setTags(req.body.tagIds);
       await product.save();
+      const productWithTags = await Product.findByPk(product.id, { include: [Category, Tag] });
       return res.status(200).json(await product.getTags());
     }
     // if no product tags, just respond
+    const productData = await Product.findByPk(product.id, { include: [Category, Tag] });
     return res.status(200).json(product);
   } catch (err) {
     console.log(err);
@@ -56,18 +59,17 @@ router.post('/', async (req, res) => {
 // update product
 router.put('/:id', async (req, res) => {
   try {
-    const product = await Product.findByPk(req.params.id, { 
-      include: [Tag],
-    });
+    const product = await Product.findByPk(req.params.id, { include: [Tag] });
     // update product data
     product.update(req.body);
     // if there's product tags, we need to create pairings by using the setTags method
-    if (req.body.tagIds) {
+    if (req.body.tagIds && req.body.tagIds.length > 0) {
       await product.setTags(req.body.tagIds);
     }
     await product.save();
     await product.reload();
-    return  res.status(200).json(product);
+    const updatedProduct = await Product.findByPk(req.params.id, { include: [Category, Tag] });
+    return res.status(200).json(product);
   } catch (err) {
     console.log(err);
     return res.status(500).json(err);
@@ -76,6 +78,20 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   // delete one product by its `id` value
+  try {
+    const product = await Product.findByPk(req.params.id);
+
+    if (!product) {
+      res.status(404).json(err);
+      return;
+    }
+
+    await product.destroy();
+    res.status(200).json(err);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
