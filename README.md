@@ -23,7 +23,9 @@
 
 
 ## Links
-[Video URL](https://drive.google.com/file/d/1mSo1S-Z_ipRCMi51OatmH6YJ5b9-NjI_/view?usp=drive_link)
+[Demo Video 1 URL](https://drive.google.com/file/d/1wMnGaZoT3kS3N1iGytostPd6dobORpjE/view?usp=sharing)
+
+[Demo Video 2 (Insomnia) URL](https://drive.google.com/file/d/1mSo1S-Z_ipRCMi51OatmH6YJ5b9-NjI_/view?usp=drive_link)
 
 [Repo URL](https://github.com/XtianHope/e-commerce-back-end-platform-solutions.git)
 
